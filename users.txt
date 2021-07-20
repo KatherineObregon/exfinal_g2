@@ -1,0 +1,14 @@
+username: katyObregon
+password: adminGeneral
+
+username: joseGarcia
+password: joseGarcia123
+
+username: eduardoCampos
+password: eduardoCampos123
+
+username: juanPerez
+password: famosoJuanPerez
+
+username: alanGarcia
+password: alanGarcia
