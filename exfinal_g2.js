@@ -39,9 +39,9 @@ app.post('/trylogin', bodyParser.urlencoded({extended: true}), function (req, re
         if(data[0]!=null){
             usuarioActual = data[0];
             var sqlUpdate = "update user set connected=1 where iduser=?";
-            conn.query(sqlUpdate,[usuarioActual.iduser]);
+            conn.query(sqlUpdate,[data[0].iduser]);
             var sqlDateUpdate = "update user set dateonline=now() where iduser=?";
-            conn.query(sqlDateUpdate,[usuarioActual.iduser]);
+            conn.query(sqlDateUpdate,[data[0].iduser]);
             res.redirect("/principal");
         }else{
             res.redirect("/");
@@ -62,8 +62,17 @@ let frases =["hoy sera un buen dia", "que buen dia ", "me gusta vivir", "me enca
 
 let indice=0;
 let frase="";
-socketio.on("connection", function (webSocket) {
+function mandarMensajeBonito(){
+    indice= Math.floor((Math.random() * 10));
+    frase= frases[indice];
+    console.log(frase);
+    socketio.emit("frase", frase);
+}
+setInterval(mandarMensajeBonito, 60000);
 
+
+socketio.on("connection", function (webSocket) {
+    var usuarioActualSockect = usuarioActual;
     console.log("usuario conectado c:")
 
     usuariosConectados = usuariosConectados + 1;
@@ -73,13 +82,6 @@ socketio.on("connection", function (webSocket) {
         if (error) throw error;
         socketio.emit("listaTotal", usuarios);
     });
-
-    function mandarMensajeBonito(){
-        indice= Math.floor((Math.random() * 10));
-        frase= frases[indice];
-        console.log(frase);
-        socketio.emit("frase", frase);
-    }setInterval(mandarMensajeBonito, 60000);
 
 
     //mando historial de chat
@@ -114,20 +116,18 @@ socketio.on("connection", function (webSocket) {
             + ":c\n------------------------------------");
         usuariosConectados = usuariosConectados - 1;
         socketio.emit("cantConect", usuariosConectados);
-
-        //borrar al usuario
-        listaUsuarios.forEach(function (usuario, index) {
-            if (usuario === nombreUsuario) {
-                listaUsuarios.splice(index, 1);
-            }
+        var sqlUpdate = "update user set connected=0 where iduser=?";
+        conn.query(sqlUpdate,[usuarioActualSockect.iduser]);
+        var query1 = "select * from user "
+        conn.query(query1, function (error, usuarios) {
+            if (error) throw error;
+            socketio.emit("listaTotal", usuarios);
         });
-
-        socketio.emit("listaUsuarios", listaUsuarios);
     });
 
     webSocket.on("typing", function (typing) {
         var msg = {
-            usuario: nombreUsuario,
+            usuario: usuarioActualSockect.name,
             typing: typing
         }
         webSocket.broadcast.emit("typing", msg);
