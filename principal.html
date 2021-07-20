@@ -19,7 +19,13 @@
 
             $("form").submit(function () {
                 var textoAenviar = $("#mensaje").val();
-                socket.emit("mensaje de chat", textoAenviar);
+                switch (textoAenviar){
+                    case "cmd-mensajes":
+                        socket.emit("cantidad de mensajes", true);
+                        break;
+                    default:
+                        socket.emit("mensaje de chat", textoAenviar);
+                }
                 console.log("msg a enviar: "+textoAenviar);
                 $("#mensaje").val("");
 

@@ -104,6 +104,11 @@ socketio.on("connection", function (webSocket) {
         });
     });
 
+    //cerrar sesión:
+    webSocket.on("cerrar sesion", function(){
+        webSocket.disconnect();
+    });
+
     webSocket.on("disconnect", function () {
         console.log("usario desconectado "
             + ":c\n------------------------------------");
@@ -126,9 +131,13 @@ socketio.on("connection", function (webSocket) {
         webSocket.broadcast.emit("typing", msg);
     });
 
-    //cerrar sesión:
-    webSocket.on("cerrar sesion", function(){
-        webSocket.disconnect();
+    webSocket.on("cmd-mensajes", function (data) {
+        var msg = {
+            usuario: usuarioActualSockect.name,
+            typing: typing
+        }
+        webSocket.broadcast.emit("typing", msg);
     });
+
 })
 
