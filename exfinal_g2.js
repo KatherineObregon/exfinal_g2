@@ -45,8 +45,8 @@ socketio.on("connection", function (webSocket) {
     var query1 = "select * from messages "
     conn.query(query1, function (error, data) {
         if (error) throw error;
-        let usuariosTotal = JSON.stringify(data);
-        socketio.emit("todos los usuarios", usuariosTotal);
+        let listaTotal = JSON.stringify(data);
+        socketio.emit("listaTotal", listaTotal);
 
 
     });
