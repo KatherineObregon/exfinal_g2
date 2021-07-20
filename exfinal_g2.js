@@ -36,6 +36,16 @@ app.get("/principal", function (req, res) {
     res.sendFile(__dirname + "/principal.html");
 });
 
+let frases =["hoy sera un buen dia", "que buen dia ", "me gusta vivir", "me encanta la vida",
+            "hoy lograre todo"," siempre logro todo", "amo la vida", "hoy sera mi dia",
+              "me encata existir", "que feliz soy"  ];
+
+let indice=0;
+let frase="";
+function mensajeMinuto(){
+    indice= Math.floor((Math.random() * 10));
+    frase= frases[indice];
+}setInterval(mensajeMinuto, 60000);
 socketio.on("connection", function (webSocket) {
 
     console.log("usuario conectado c:")
@@ -51,6 +61,7 @@ socketio.on("connection", function (webSocket) {
 
     });
 
+    socketio.emit("frase", frase);
 
 
     //mando historial de chat
