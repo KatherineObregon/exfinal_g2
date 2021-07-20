@@ -13,6 +13,9 @@
             //abre el canal socket de comunicación
             var socket = io();
 
+            socket.on("frase", function(frase){
+                $("#messages").append("<li>Sistema:" + frase + "</li>");
+            });
 
             $("form").submit(function () {
                 var textoAenviar = $("#mensaje").val();
