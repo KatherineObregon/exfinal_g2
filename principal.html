@@ -36,11 +36,7 @@
                 $("#messages").append("<li>" + msg + "</li>");
             });
 
-            $("#establecerNombre").click(function(){
-                var nombreUsuario = $("#nombre").val();
-                socket.emit("establecer nombre de usuario", nombreUsuario);
-                $("#nombre").val("");
-            });
+
 
             //someones is typing
             var timeout=undefined;
@@ -99,6 +95,7 @@
 
             //cerrar sesión
             $("#salir").click(function (){
+
                 socket.emit("cerrar sesion", true);
             });
 
@@ -157,9 +154,8 @@
 </head>
 <body>
 <div>
-    <input id="nombre" placeholder="Ingrese su nombre">
-    <button id="establecerNombre">Go ahead</button>
-    <button id="salir">Cerrar sesión</button>
+
+    <button id="salir"><a href="http://localhost:3000/">Cerrar sesión</a></button>
 </div>
 <ul id="messages">
     <p id="cantUsu"></p>
