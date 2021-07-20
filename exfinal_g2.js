@@ -52,29 +52,16 @@ app.post('/trylogin', bodyParser.urlencoded({extended: true}), function (req, re
 app.get("/principal", function (req, res) {
     res.sendFile(__dirname + "/principal.html");
 });
-let frases =["hoy sera un buen dia", "que buen dia ", "me gusta vivir", "me encanta la vida",
-    "hoy lograre todo"," siempre logro todo", "amo la vida", "hoy sera mi dia",
-    "me encata existir", "que feliz soy"  ];
 
-let indice=0;
-let frase="";
-function mensajeMinuto(){
-    indice= Math.floor((Math.random() * 10));
-    frase= frases[indice];
-}setInterval(mensajeMinuto, 60000);
 var usuariosConectados = 0;
 var listaUsuarios = [];
 
 let frases =["hoy sera un buen dia", "que buen dia ", "me gusta vivir", "me encanta la vida",
-            "hoy lograre todo"," siempre logro todo", "amo la vida", "hoy sera mi dia",
+            "hoy lograre todo","siempre logro todo", "amo la vida", "hoy sera mi dia",
               "me encata existir", "que feliz soy"  ];
 
 let indice=0;
 let frase="";
-function mensajeMinuto(){
-    indice= Math.floor((Math.random() * 10));
-    frase= frases[indice];
-}setInterval(mensajeMinuto, 60000);
 socketio.on("connection", function (webSocket) {
 
     console.log("usuario conectado c:")
@@ -82,15 +69,17 @@ socketio.on("connection", function (webSocket) {
     usuariosConectados = usuariosConectados + 1;
     socketio.emit("cantConect", usuariosConectados);
     var query1 = "select * from user "
-    /*conn.query(query1, function (error, data) {
+    conn.query(query1, function (error, usuarios) {
         if (error) throw error;
-        let listaTotal = JSON.stringify(data);
-        socketio.emit("listaTotal", listaTotal);
+        socketio.emit("listaTotal", usuarios);
+    });
 
-
-    });*/
-
-    socketio.emit("frase", frase);
+    function mandarMensajeBonito(){
+        indice= Math.floor((Math.random() * 10));
+        frase= frases[indice];
+        console.log(frase);
+        socketio.emit("frase", frase);
+    }setInterval(mandarMensajeBonito, 60000);
 
 
     //mando historial de chat
