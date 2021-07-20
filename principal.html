@@ -53,7 +53,7 @@
                 if(msg.typing){
                     $("#typing").html(msg.usuario+" esta escribiendo...");
                     clearTimeout(timeout);
-                    timeout = setTimeout(eliminateTyping, 1000);
+                    timeout = setTimeout(eliminateTyping, 200);
                 }else{
                     eliminateTyping();
                 }
@@ -63,14 +63,8 @@
                 $("#typing").html("");
             }
 
-            socket.on("listaUsuarios", function(listaUsuarios){
-                $("#usuarios").html("");
-                listaUsuarios.forEach(function(usuario) {
-                    $("#usuarios").append("<p>-"+usuario+"</p>");
-                });
-            });
-
             socket.on("listaTotal", function(listaTotal){
+                $("#usuariosTotal").html("");
                 listaTotal.forEach(function(usuario) {
                     let fecha = usuario.dateonline;
 
