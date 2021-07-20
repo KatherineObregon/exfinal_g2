@@ -95,7 +95,9 @@ socketio.on("connection", function (webSocket) {
 
     webSocket.on("mensaje de chat", function (msg) {
         //todo: agregar fecha del mensaje
-        webSocket.broadcast.emit("mostrar en chat", usuarioActualSockect.name + ": " + msg);
+
+        var ahora = new Date();
+        webSocket.broadcast.emit("mostrar en chat", usuarioActualSockect.name + ": " + msg +" "+ahora);
         var query = "insert into messages(user, message, datemessage) "
             + "values (?, ?,now())";
         var params = [usuarioActualSockect.iduser, msg];
