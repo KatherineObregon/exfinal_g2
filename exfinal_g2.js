@@ -42,7 +42,7 @@ socketio.on("connection", function (webSocket) {
 
     usuariosConectados = usuariosConectados + 1;
     socketio.emit("cantConect", usuariosConectados);
-    var query1 = "select * from messages "
+    var query1 = "select * from user "
     conn.query(query1, function (error, data) {
         if (error) throw error;
         let listaTotal = JSON.stringify(data);
