@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
+    "nodemon": "^2.0.12",
     "socket.io": "^4.1.3"
   }
 }

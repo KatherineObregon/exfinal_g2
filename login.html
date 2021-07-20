@@ -12,7 +12,7 @@
 <body>
 <div class="container text-center">
     <div>
-        <h2>Please Login</h2>
+        <h2>Bienvenido!</h2>
         <br/>
     </div>
 
@@ -21,10 +21,10 @@
     <form th:action="@{/login}" method="post" style="max-width: 400px; margin: 0 auto;">
         <div class="border border-secondary rounded p-3">
             <div>
-                <p><input type="email" name="email" required class="form-control" placeholder="E-mail" /></p>
+                <p><input type="text" name="username" required class="form-control" placeholder="Usuario" /></p>
             </div>
             <div>
-                <p><input type="password" name="pass" required class="form-control" placeholder="Password" /></p>
+                <p><input type="password" name="password" required class="form-control" placeholder="Contraseña" /></p>
             </div>
             <div>
                 <p><input type="submit" value="Login" class="btn btn-primary" /></p>

@@ -6,12 +6,30 @@ let app = express();
 let servidorHttp = http.Server(app);
 let socketio = socketIO(servidorHttp);
 
+//mysql
+const mysql = require("mysql2");
+let conn = mysql.createConnection(
+    {
+        host: "localhost",
+        user: "root",
+        password: "root",
+        database: "exfinal_g2"
+    }
+);
+
 servidorHttp.listen(3000, function () {
     console.log("servidor levantado existosamente");
 });
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/login.html");
+});
+
+app.post('/', bodyParser.json(), function (req, res) {
+    let username = req.body.username;
+    let password = req.body.password;
+    console.log(`Nombre: ${nombre}, Apellido: ${apellido}`);
+    res.send(`Nombre: ${nombre}, Apellido: ${apellido}`);
 });
 
 app.get("/principal", function (req, res) {
