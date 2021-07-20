@@ -71,6 +71,17 @@
                 });
             });
 
+            socket.on("listaTotal", function(listaTotal){
+                listaTotal.forEach(function(usuario) {
+                    if(usuario.connected===1){
+                        $("#usuariosTotal").append("<p>-"+usuario.username+"-"+ usuario.dateonline+ "</p>").css({'color':'green'});
+                    }else{
+                        $("#usuariosTotal").append("<p>-"+usuario.username+"</p>").css({'color':'red'});
+                    }
+
+                });
+            });
+
             //llenar los chat:
             socket.on("historial de chat", function (historial){
                 for(i=0; i<historial.length; i++){
@@ -149,7 +160,7 @@
     <hr>
     <ol>
         <p>Usuarios:</p>
-        <div id="usuarios"></div>
+        <div id="usuariosTotal"></div>
     </ol>
     <hr>
     <p id="typing"></p>

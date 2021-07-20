@@ -42,6 +42,16 @@ socketio.on("connection", function (webSocket) {
 
     usuariosConectados = usuariosConectados + 1;
     socketio.emit("cantConect", usuariosConectados);
+    var query1 = "select * from messages "
+    conn.query(query1, function (error, data) {
+        if (error) throw error;
+        let usuariosTotal = JSON.stringify(data);
+        socketio.emit("todos los usuarios", usuariosTotal);
+
+
+    });
+
+
 
     //mando historial de chat
     var query = "select * from messages "
