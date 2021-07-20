@@ -27,7 +27,7 @@ app.get("/", function (req, res) {
     res.sendFile(__dirname + "/login.html");
 });
 
-
+var usuarioActual = "";
 app.post('/trylogin', bodyParser.urlencoded({extended: true}), function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
@@ -37,6 +37,11 @@ app.post('/trylogin', bodyParser.urlencoded({extended: true}), function (req, re
     conn.query(sql, params, function (error, data) {
         if (error) throw error
         if(data[0]!=null){
+            usuarioActual = data[0];
+            var sqlUpdate = "update user set connected=1 where iduser=?";
+            conn.query(sqlUpdate,[usuarioActual.iduser]);
+            var sqlDateUpdate = "update user set dateonline=now() where iduser=?";
+            conn.query(sqlDateUpdate,[usuarioActual.iduser]);
             res.redirect("/principal");
         }else{
             res.redirect("/");
@@ -59,23 +64,23 @@ socketio.on("connection", function (webSocket) {
     usuariosConectados = usuariosConectados + 1;
     socketio.emit("cantConect", usuariosConectados);
     var query1 = "select * from user "
-    conn.query(query1, function (error, data) {
+    /*conn.query(query1, function (error, data) {
         if (error) throw error;
         let listaTotal = JSON.stringify(data);
         socketio.emit("listaTotal", listaTotal);
 
 
-    });
+    });*/
 
 
 
     //mando historial de chat
-    var query = "select * from messages "
+    /*var query = "select * from messages "
         + "where date>(date_add(now(), interval -5 minute))";
     conn.query(query, function (error, data) {
         if (error) throw error;
         webSocket.emit("historial de chat", data);
-    });
+    });*/
 
     var nombreUsuario = "desconocido";
     webSocket.on("establecer nombre de usuario", function (userName) {
