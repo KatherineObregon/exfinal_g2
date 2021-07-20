@@ -20,10 +20,10 @@
             $("form").submit(function () {
                 var textoAenviar = $("#mensaje").val();
                 socket.emit("mensaje de chat", textoAenviar);
+                console.log("msg a enviar: "+textoAenviar);
                 $("#mensaje").val("");
 
                 //agrego lo que acabo de enviar
-                //$("#messages").append("<li>Yo: " + textoAenviar + "</li>");
                 $("#messages").append($("<li>").html("Yo: "+textoAenviar));
                 return false;
             });
@@ -33,6 +33,7 @@
             });
 
             socket.on("mostrar en chat", function (msg) {
+                console.log("msg recibido: "+msg);
                 $("#messages").append("<li>" + msg + "</li>");
             });
 
@@ -55,9 +56,9 @@
 
             socket.on("typing", function(msg){
                 if(msg.typing){
-                    $("#typing").html(msg.usuario+" esta escribiendo...");
+                    $("#typing").html(msg.usuario+" está escribiendo...");
                     clearTimeout(timeout);
-                    timeout = setTimeout(eliminateTyping, 200);
+                    timeout = setTimeout(eliminateTyping, 500);
                 }else{
                     eliminateTyping();
                 }

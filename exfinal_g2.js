@@ -92,20 +92,13 @@ socketio.on("connection", function (webSocket) {
         webSocket.emit("historial de chat", data);
     });*/
 
-    var nombreUsuario = "desconocido";
-    webSocket.on("establecer nombre de usuario", function (userName) {
-        nombreUsuario = userName;
-        listaUsuarios[listaUsuarios.length] = nombreUsuario;
-        socketio.emit("listaUsuarios", listaUsuarios);
-    });
 
     webSocket.on("mensaje de chat", function (msg) {
-        //webSocket.emit("mostrar en chat",msg);
-        //socketio.emit("mostrar en chat", msg);
-        webSocket.broadcast.emit("mostrar en chat", nombreUsuario + ": " + msg);
-        var query = "insert into messages(user, message, date) "
+        //todo: agregar fecha del mensaje
+        webSocket.broadcast.emit("mostrar en chat", usuarioActualSockect.name + ": " + msg);
+        var query = "insert into messages(user, message, datemessage) "
             + "values (?, ?,now())";
-        var params = [nombreUsuario, msg];
+        var params = [usuarioActualSockect.iduser, msg];
         conn.query(query, params, function(error, data){
             if(error) throw error;
         });
