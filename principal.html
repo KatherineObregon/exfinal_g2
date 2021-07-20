@@ -77,7 +77,7 @@
             socket.on("listaTotal", function(listaTotal){
                 listaTotal.forEach(function(usuario) {
                     if(usuario.connected===1){
-                        $("#usuariosTotal").append("<p>-"+usuario.username+"-"+ usuario.dateonline+ "</p>").css({'color':'green'});
+                        $("#usuariosTotal").append("<p style='color: green'>-"+usuario.username+"-"+ usuario.dateonline+ "</p>");
                     }else{
                         $("#usuariosTotal").append("<p>-"+usuario.username+"</p>").css({'color':'red'});
                     }
