@@ -6,6 +6,8 @@ let app = express();
 let servidorHttp = http.Server(app);
 let socketio = socketIO(servidorHttp);
 
+const bodyParser = require('body-parser');
+
 //mysql
 const mysql = require("mysql2");
 let conn = mysql.createConnection(
@@ -25,16 +27,38 @@ app.get("/", function (req, res) {
     res.sendFile(__dirname + "/login.html");
 });
 
-app.post('/', bodyParser.json(), function (req, res) {
+
+app.post('/trylogin', bodyParser.urlencoded({extended: true}), function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
-    console.log(`Nombre: ${nombre}, Apellido: ${apellido}`);
-    res.send(`Nombre: ${nombre}, Apellido: ${apellido}`);
+
+    var sql = "select * from user where username=? and password=sha2(?,256)";
+    var params = [username, password]
+    conn.query(sql, params, function (error, data) {
+        if (error) throw error
+        if(data[0]!=null){
+            res.redirect("/principal");
+        }else{
+            res.redirect("/");
+        }
+    });
 });
 
 app.get("/principal", function (req, res) {
     res.sendFile(__dirname + "/principal.html");
 });
+let frases =["hoy sera un buen dia", "que buen dia ", "me gusta vivir", "me encanta la vida",
+    "hoy lograre todo"," siempre logro todo", "amo la vida", "hoy sera mi dia",
+    "me encata existir", "que feliz soy"  ];
+
+let indice=0;
+let frase="";
+function mensajeMinuto(){
+    indice= Math.floor((Math.random() * 10));
+    frase= frases[indice];
+}setInterval(mensajeMinuto, 60000);
+var usuariosConectados = 0;
+var listaUsuarios = [];
 
 let frases =["hoy sera un buen dia", "que buen dia ", "me gusta vivir", "me encanta la vida",
             "hoy lograre todo"," siempre logro todo", "amo la vida", "hoy sera mi dia",
