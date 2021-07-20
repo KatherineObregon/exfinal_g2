@@ -6,6 +6,8 @@ let app = express();
 let servidorHttp = http.Server(app);
 let socketio = socketIO(servidorHttp);
 
+const bodyParser = require('body-parser');
+
 //mysql
 const mysql = require("mysql2");
 let conn = mysql.createConnection(
@@ -25,16 +27,30 @@ app.get("/", function (req, res) {
     res.sendFile(__dirname + "/login.html");
 });
 
-app.post('/', bodyParser.json(), function (req, res) {
+
+app.post('/trylogin', bodyParser.urlencoded({extended: true}), function (req, res) {
     let username = req.body.username;
     let password = req.body.password;
-    console.log(`Nombre: ${nombre}, Apellido: ${apellido}`);
-    res.send(`Nombre: ${nombre}, Apellido: ${apellido}`);
+
+    var sql = "select * from user where username=? and password=sha2(?,256)";
+    var params = [username, password]
+    conn.query(sql, params, function (error, data) {
+        if (error) throw error
+        if(data[0]!=null){
+            res.redirect("/principal");
+        }else{
+            res.redirect("/");
+        }
+    });
 });
+
 
 app.get("/principal", function (req, res) {
     res.sendFile(__dirname + "/principal.html");
 });
+
+var usuariosConectados = 0;
+var listaUsuarios = [];
 
 socketio.on("connection", function (webSocket) {
 
