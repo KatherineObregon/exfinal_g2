@@ -83,7 +83,7 @@
             socket.on("historial de chat", function (historial){
                 for(i=0; i<historial.length; i++){
                     $("#messages").append("<li>"+historial[i].user+": "+historial[i].message+"</li>");
-                    console.log("<li>"+historial[i].user+": "+historial[i].message+"</li>")
+                    console.log("<li>"historial[i].datemessage+" | "+historial[i].user+": "+historial[i].message+"</li>")
                 }
 
             });

@@ -85,12 +85,12 @@ socketio.on("connection", function (webSocket) {
 
 
     //mando historial de chat
-    /*var query = "select * from messages "
-        + "where date>(date_add(now(), interval -5 minute))";
+    var query = "select * from messages "
+        + "where datemessage>(date_add(now(), interval -5 minute))";
     conn.query(query, function (error, data) {
         if (error) throw error;
         webSocket.emit("historial de chat", data);
-    });*/
+    });
 
 
     webSocket.on("mensaje de chat", function (msg) {
