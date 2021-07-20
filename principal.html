@@ -21,7 +21,7 @@
                 var textoAenviar = $("#mensaje").val();
                 switch (textoAenviar){
                     case "cmd-mensajes":
-                        socket.emit("cantidad de mensajes", true);
+                        socket.emit("cmd-mensajes", true);
                         break;
                     default:
                         socket.emit("mensaje de chat", textoAenviar);

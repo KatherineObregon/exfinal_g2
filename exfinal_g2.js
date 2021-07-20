@@ -134,11 +134,11 @@ socketio.on("connection", function (webSocket) {
     });
 
     webSocket.on("cmd-mensajes", function (data) {
-        var msg = {
-            usuario: usuarioActualSockect.name,
-            typing: typing
-        }
-        webSocket.broadcast.emit("typing", msg);
+        conn.query("select count(*) from messages", function (error, cantMes) {
+            if (error) throw error;
+            var cantMens = "Sistema: Hora | Cantidad de mensajes: "+cantMes[0];
+            webSocket.emit("mostrar en chat", cantMens);
+        });
     });
 
 })
